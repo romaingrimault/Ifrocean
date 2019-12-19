@@ -27,6 +27,11 @@ namespace Ifrocean.DAO
             ObservableCollection<CommuneDAO> l = CommuneDAL.selectCommune();
             return l;
         }
+        public static ObservableCollection<CommuneDAO> listeCommuneDepartement(int idDepartement)
+        {
+            ObservableCollection<CommuneDAO> l = CommuneDAL.selectCommuneDepartement(idDepartement);
+            return l;
+        }
 
         public static CommuneDAO getCommune(int idCommune)
         {
@@ -34,9 +39,9 @@ namespace Ifrocean.DAO
             return p;
         }
 
-        public static void updateCommune(CommuneViewModel d)
+        public static void updateCommune(CommuneDAO d)
         {
-            CommuneDAL.updateCommune(new CommuneDAO(d.idCommuneProperty ,d.nomCommuneProperty, d.codePostalProperty, d.idDepartementCommuneProperty)) ;
+            CommuneDAL.updateCommune(d) ;
         }
 
         public static void supprimerCommune(int id)
@@ -44,9 +49,9 @@ namespace Ifrocean.DAO
             CommuneDAL.supprimerCommune(id);
         }
 
-        public static void insertCommune(CommuneViewModel d)
+        public static void insertCommune(CommuneDAO d)
         {
-            CommuneDAL.insertCommune(new CommuneDAO(d.idCommuneProperty, d.nomCommuneProperty, d.codePostalProperty, d.idDepartementCommuneProperty));
+            CommuneDAL.insertCommune(d);
         }
     }
 }

@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Linq;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
 using Ifrocean.Ctrl;
-using Ifrocean.DAL;
-using Ifrocean.DAO;
 using Ifrocean.ORM;
 using Ifrocean.Erreur;
+using System.Text.RegularExpressions;
 using Ifrocean.Exeption;
 
 namespace Ifrocean
@@ -27,58 +22,67 @@ namespace Ifrocean
         /// </summary>
         int selectDepartementId;
         DepartementViewModel myDataObject; // Objet de liaison
-        DalDepartement c = new DalDepartement();
         ObservableCollection<DepartementViewModel> lp;
-        int compteur = 0;
         /// <summary>
         /// commune
         /// </summary>
         PersonneViewModel myDataObject1; // Objet de liaison
-        PersonneDAL c1 = new PersonneDAL();
         ObservableCollection<PersonneViewModel> lp1;
-        int compteur1 = 0;
         /// <summary>
         /// etude
         /// </summary>
         EtudeViewModel myDataObject2; // Objet de liaison
-        EtudeDAL c2 = new EtudeDAL();
         ObservableCollection<EtudeViewModel> lp2;
-        int compteur2 = 0;
+       
         /// <summary>
         /// animaux
         /// </summary>
         AnimauxViewModel myDataObject3; // Objet de liaison
-        AnimauxDAL c3 = new AnimauxDAL();
         ObservableCollection<AnimauxViewModel> lp3;
-        int compteur3 = 0;
         /// <summary>
         /// commune
         /// </summary>
         CommuneViewModel myDataObject4; // Objet de liaison
-        CommuneDAL c4 = new CommuneDAL();
         ObservableCollection<CommuneViewModel> lp4;
-        int compteur4 = 0;
+        /// <summary>
+        /// Plage
+        /// </summary>
         PlageViewModel myDataObject5; // Objet de liaison
-        PlageDAL c5 = new PlageDAL();
         ObservableCollection<PlageViewModel> lp5;
-        int compteur5 = 0;
+        PlageDeEtudeViewModel myDataObject6;
+
+        ObservableCollection<PlageViewModel> PlageZone;
+        ObservableCollection<CommuneViewModel> CommuneParDepartement;
+        ObservableCollection<PlageViewModel> listePlageParCommune;
+
+        ZoneEtudeViewModel myDataObject7; // Objet de liaison
+        ObservableCollection<ZoneEtudeViewModel> lp7;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            DALConnection.OpenConnection();
+           
             lp = DepartementORM.listeDepartement();
             lp1 = PersonenORM.listePersonne();
             lp2 = EtudeORM.listeEtude();
             lp3 = AnimauxORM.listeAnimaux();
             lp4 = CommuneORM.listeCommune();
             lp5 = PlageORM.listePlage();
+            lp7 = ZoneEtudeORM.listeZoneEtude();
+
+            
+           
            
 
             //LIEN AVEC la VIEW
             listeDepartement.ItemsSource = lp;
             listeCommune.ItemsSource = lp4;
-            listePlage.ItemsSource = lp5;
+            listePlage.ItemsSource = PlageZone;
+            listeEtude.ItemsSource = lp2;
+           // listeDepartement2.ItemsSource = lp;
+           // listeCommune2.ItemsSource = CommuneParDepartement;
+            listePlage2.ItemsSource = lp5;
             // this.DataContext = lp; // bind de la liste avec la source, permettant le binding mais de façon globale sur toute la fenetre
         }
 
@@ -89,10 +93,8 @@ namespace Ifrocean
             myDataObject.nomDepartementProperty = nomDepartementTextBox.Text;
             DepartementViewModel nouveau = new DepartementViewModel(0, myDataObject.nomDepartementProperty, myDataObject.numeroDepartementProperty);
             lp.Add(nouveau);
-            DepartementDAO.insertDepartement(nouveau);
-
-            compteur = lp.Count();
-            myDataObject = new DepartementViewModel(0, "", "");
+            DepartementORM.insertDepartement(nouveau);
+            lp = DepartementORM.listeDepartement();
             numeroDepartementTextBox.Text = string.Empty;
             nomDepartementTextBox.Text = string.Empty;
         }
@@ -108,28 +110,36 @@ namespace Ifrocean
                 myDataObject1.adminPersonneProperty = 1;
             else
                 myDataObject1.adminPersonneProperty = 0;
-            PersonneViewModel nouveau = new PersonneViewModel(myDataObject1.nomPersonneProperty, myDataObject1.prenomPersonneProperty,myDataObject1.identifiantPersonneProperty,myDataObject1.mdpPersonneProperty,myDataObject1.mailPersonneProperty,myDataObject1.adminPersonneProperty);
+            PersonneViewModel nouveau = new PersonneViewModel(0,myDataObject1.nomPersonneProperty, myDataObject1.prenomPersonneProperty,myDataObject1.identifiantPersonneProperty,myDataObject1.mdpPersonneProperty,myDataObject1.mailPersonneProperty,myDataObject1.adminPersonneProperty);
             lp1.Add(nouveau);
-            PersonneDAO.insertPersonne(nouveau);
-
-            compteur = lp1.Count();
-            myDataObject1 = new PersonneViewModel("", "","","","",0) ;
+            PersonenORM.insertPersonne(nouveau);
+            lp1 = PersonenORM.listePersonne();
             nomUserTextBox.Text = string.Empty;
             prenomTextBox.Text = string.Empty;
             mailTextBox.Text = string.Empty;
             identifiantTextBox.Text = string.Empty;
             mdpTextBox.Password = string.Empty;
         }
+
         private void AjouterEtude_Click_1(object sender, EventArgs e) {
             myDataObject2 = new EtudeViewModel();
             myDataObject2.nomEtudeProperty = nomEtudeTextBox.Text;
-
-            EtudeViewModel nouveau = new EtudeViewModel(myDataObject2.nomEtudeProperty);
+            
+            myDataObject6 = new PlageDeEtudeViewModel();
+           
+            EtudeViewModel nouveau = new EtudeViewModel(0,myDataObject2.nomEtudeProperty);
             lp2.Add(nouveau);
-            EtudeDAO.insertEtude(nouveau);
-
-            compteur = lp2.Count();
-            myDataObject2 = new EtudeViewModel("") ;
+            EtudeORM.insertEtude(nouveau);
+            lp2 = EtudeORM.listeEtude();
+            EtudeViewModel newEtude=EtudeORM.listeEtude().Last();
+            foreach (PlageViewModel plage in lp5)
+            {
+                if (plage.isChekedProperty)
+                {
+                    PlageDeEtudeViewModel ajoutNouveau = new PlageDeEtudeViewModel(newEtude, plage);
+                    PlageDeEtudeORM.insertPlageDeEtude(ajoutNouveau);
+                }
+            }
             nomEtudeTextBox.Text = string.Empty;
 
         }
@@ -139,10 +149,8 @@ namespace Ifrocean
 
             AnimauxViewModel nouveau = new AnimauxViewModel(myDataObject3.nomEspeceAnimauxProperty);
             lp3.Add(nouveau);
-            AnimauxDAO.insertAnimaux(nouveau);
-
-            compteur = lp3.Count();
-            myDataObject3 = new AnimauxViewModel("") ;
+            AnimauxORM.insertAnimaux(nouveau);
+            lp3 = AnimauxORM.listeAnimaux();
             nomEspeceTextBox.Text = string.Empty;
         }
         private void AjoutCommune_Click_1(object sender, EventArgs e)
@@ -159,13 +167,11 @@ namespace Ifrocean
                 myDataObject4 = new CommuneViewModel();
                 myDataObject4.nomCommuneProperty = nomCommuneTextBox.Text;
                 myDataObject4.codePostalProperty = codePosatelDepartementTextBox.Text;
-                var list = (DepartementViewModel)listeDepartement.SelectedItem;
-                myDataObject4.idDepartementCommuneProperty = list.idDepartementProperty;
-                CommuneViewModel nouveau = new CommuneViewModel(0,myDataObject4.nomCommuneProperty, myDataObject4.codePostalProperty, myDataObject4.idDepartementCommuneProperty);
+                DepartementViewModel departement = (DepartementViewModel)listeDepartement.SelectedItem;
+                CommuneViewModel nouveau = new CommuneViewModel(0,myDataObject4.nomCommuneProperty, myDataObject4.codePostalProperty,departement);
                 lp4.Add(nouveau);
-                CommuneDAO.insertCommune(nouveau);
-                compteur4 = lp4.Count();
-                myDataObject4 = new CommuneViewModel (0, "", "",0);
+                CommuneORM.insertCommune(nouveau);
+                lp4 = CommuneORM.listeCommune();
                 nomCommuneTextBox.Text = string.Empty;
                 codePosatelDepartementTextBox.Text = string.Empty;
                 listeDepartement.Items.Refresh();
@@ -190,35 +196,107 @@ namespace Ifrocean
             myDataObject5 = new PlageViewModel();
             myDataObject5.nomPlageProperty = nomPlage.Text;
             var list = (CommuneViewModel)listeCommune.SelectedItem;
-            myDataObject5.idCommunePlageProperty = list.idCommuneProperty;
-            PlageViewModel nouveau = new PlageViewModel(0, myDataObject5.nomPlageProperty, myDataObject5.idCommunePlageProperty);
+            PlageViewModel nouveau = new PlageViewModel(0, myDataObject5.nomPlageProperty, new CommuneViewModel(list.idCommuneProperty,"","",null));
             lp5.Add(nouveau);
-            PlageDAO.insertPlage(nouveau);
-            compteur4 = lp4.Count();
-            myDataObject5 = new PlageViewModel(0, "", 0);
+            PlageORM.insertPlage(nouveau);
+            lp5 = PlageORM.listePlage();
             nomPlage.Text = string.Empty;
             listeCommune.ItemsSource= null ;
         }
         private void AjoutZone_Click_1(object sender, EventArgs e)
         {
-          /*  try
+            try
             {
+                Regex coordonne = new Regex( @"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$");
+                if (!coordonne.Match(CoordonneATextBox.Text).Success)
+                    throw new CoordonneInvalidExeption("Coordonnée A invalide");
+                if (!coordonne.Match(CoordonneBTextBox.Text).Success)
+                    throw new CoordonneInvalidExeption("Coordonnée B invalide");
+                if (!coordonne.Match(CoordonneCTextBox.Text).Success)
+                    throw new CoordonneInvalidExeption("Coordonnée C invalide"); 
+                if (!coordonne.Match(CoordonneDTextBox.Text).Success)
+                    throw new CoordonneInvalidExeption("Coordonnée D invalide");
+                string pointA = coordonnee(CoordonneATextBox.Text);
+                string pointB = coordonnee(CoordonneBTextBox.Text);
+                string pointC = coordonnee(CoordonneCTextBox.Text);
+                string pointD = coordonnee(CoordonneDTextBox.Text);
 
-                if (CoordonneATextBox.Text.<)
+                myDataObject7 = new ZoneEtudeViewModel();
+                EtudeViewModel etude= (EtudeViewModel)listeEtude.SelectedItem;
+                PlageViewModel plage= (PlageViewModel)listePlage.SelectedItem;
+
+                int idZone = ZoneEtudeORM.getMaxIdZone(etude,plage);
+                idZone += 1;
+                PersonneViewModel personne = new PersonneViewModel(2,"","","","","",0);
+
+                ZoneEtudeViewModel nouveau = new ZoneEtudeViewModel(DateTime.Now,pointA,pointB,pointC,pointD,10,idZone,personne,etude,plage);
+                lp7.Add(nouveau);
+                ZoneEtudeORM.insertZoneEtude(nouveau);
+                lp7 = ZoneEtudeORM.listeZoneEtude();
+
             }
             catch(CoordonneInvalidExeption coordExpte)
             {
-
-            }*/
-
+                MessageBox.Show(coordExpte.Message);
+            }
+             CoordonneATextBox.Text=string.Empty;
+             CoordonneBTextBox.Text=string.Empty;
+             CoordonneCTextBox.Text=string.Empty;
+             CoordonneDTextBox.Text=string.Empty;
+             listeEtude.Items.Refresh();
+             listePlage.Items.Refresh();
+                }
+        public string coordonnee(string valeur)
+        {/*
+            int index = CoordonneATextBox.Text.IndexOf(',');
+            double Latitude = 0;
+            if (index > 0)
+            {
+                string latitude = valeur.Substring(0, index);
+                latitude = latitude.Replace('.', ',');
+                Latitude = Convert.ToDouble(latitude);
+            }
+            double Longitude = 0;
+            if (index > 0)
+            {
+                index += 1;
+                string longitude = valeur.Substring(index);
+                longitude = longitude.Replace('.', ',');
+                Longitude = Convert.ToDouble(longitude);
+            }
+            Point point = new Point(Latitude, Longitude);*/
+            int index = valeur.IndexOf(',');
+            string modif = valeur.Replace('.', ',');
+            modif = modif.Remove(index,1);
+            modif = modif.Insert(index,".");
+            return modif;
         }
 
-        private void ListeCommune_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void ListeEtude_Selected(object sender, RoutedEventArgs e)
         {
-            
+            PlageZone = new ObservableCollection<PlageViewModel>();
+            PlageZone = EtudeORM.listeEtudePlage((EtudeViewModel)listeEtude.SelectedItem);
+            listePlage.ItemsSource = PlageZone;
         }
+       /* private void ListeCommune_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            CommuneParDepartement = new ObservableCollection<CommuneViewModel>();
+            CommuneParDepartement = CommuneORM.listeCommuneDepartement((DepartementViewModel)listeDepartement2.SelectedItem);
+            listeCommune2.ItemsSource = CommuneParDepartement;
+            listePlage2.ItemsSource = null;
+        }
+        private void ListePlage_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            listePlageParCommune = new ObservableCollection<PlageViewModel>();
+            listePlageParCommune = PlageORM.listePlageParCommune((CommuneViewModel)listeCommune2.SelectedItem);
+            listePlage2.ItemsSource = listePlageParCommune;
+        }*/
 
+        private void Box_Checked(object sender, RoutedEventArgs e)
+        {
 
+        }
 
         /*
         private void DepartementCheck(object sender, SelectionChangedEventArgs e)

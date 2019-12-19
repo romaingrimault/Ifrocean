@@ -32,9 +32,9 @@ namespace Ifrocean.DAO
             return p;
         }
 
-        public static void updateAnimaux(AnimauxViewModel d)
+        public static void updateAnimaux(AnimauxDAO d)
         {
-            AnimauxDAL.updateAnimaux(new AnimauxDAO(d.nomEspeceAnimauxProperty));
+            AnimauxDAL.updateAnimaux(d);
         }
 
         public static void supprimerAnimaux(int id)
@@ -42,9 +42,9 @@ namespace Ifrocean.DAO
             AnimauxDAL.supprimerAnimaux(id);
         }
 
-        public static void insertAnimaux(AnimauxViewModel d)
+        public static void insertAnimaux(AnimauxDAO d)
         {
-            AnimauxDAL.insertAnimaux(new AnimauxDAO(d.nomEspeceAnimauxProperty));
+            AnimauxDAL.insertAnimaux(d);
         }
     }
 }

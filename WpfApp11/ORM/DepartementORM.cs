@@ -28,6 +28,20 @@ namespace Ifrocean
             }
             return l;
         }
+        public static void updateDepartement(DepartementViewModel d)
+        {
+            DepartementDAO.updateDepartement(new DepartementDAO(d.idDepartementProperty, d.nomDepartementProperty, d.numeroDepartementProperty));
+        }
+
+        public static void supprimerDepartement(int id)
+        {
+            DepartementDAO.supprimerDepartement(id);
+        }
+
+        public static void insertDepartement(DepartementViewModel d)
+        {
+            DepartementDAO.insertDepartement(new DepartementDAO(d.idDepartementProperty, d.nomDepartementProperty, d.numeroDepartementProperty));
+        }
     }
     
 }

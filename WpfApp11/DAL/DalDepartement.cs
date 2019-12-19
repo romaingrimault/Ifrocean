@@ -18,9 +18,10 @@ namespace Ifrocean
         }
         public static ObservableCollection<DepartementDAO> selectDepartement()
         {
+
             ObservableCollection<DepartementDAO> l = new ObservableCollection<DepartementDAO>();
             string query = "SELECT * FROM Departement;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -37,7 +38,7 @@ namespace Ifrocean
         {
            
             string query = "INSERT INTO departement (nom,NumeroDepartement) VALUES (@nomDepartement,@numeroDepartement);";
-            MySqlCommand cmd1 = new MySqlCommand(query,DALConnection.connection);
+            MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd1.Parameters.AddWithValue("@nomDepartement", d.nomDepartementDAO);
             cmd1.Parameters.AddWithValue("@numeroDepartement", d.numeroDepartementDAO);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd1);
@@ -47,7 +48,7 @@ namespace Ifrocean
         public static DepartementDAO getDepartement(int idDepartement)
         {
             string query = "SELECT * FROM Departement WHERE idDepartement=" + idDepartement + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -59,14 +60,14 @@ namespace Ifrocean
         public static void updateDepartement(DepartementDAO d)
         {
             string query = "UPDATE Departement set nom=\"" + d.nomDepartementDAO + "\", NumeroDepartement=\"" + d.numeroDepartementDAO + "\" where idDepartement=" + d.idDepartementDAO + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
         }
         public static void supprimerDepartement(int id)
         {
             string query = "DELETE FROM Departement WHERE idDepartement = \"" + id + "\";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
         }

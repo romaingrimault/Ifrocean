@@ -63,7 +63,7 @@ namespace Ifrocean
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                DepartementDAO.updateDepartement(this);
+                DepartementORM.updateDepartement(this);
             }
         }
     }

@@ -20,10 +20,8 @@
                         <StackPanel Grid.ColumnSpan="2" Margin="0,0,-0.7,0">
 
                             <Label Content="nom du département"></Label>
-                            <!--            <TextBox Name="nomTextBox" TextChanged="nomChanged"/> -->
                             <TextBox Name="nomDepartementTextBox" Height="20"/>
                             <Label Content="numéro du département"></Label>
-                            <!-- <TextBox Name="prenomTextBox" TextChanged="prenomChanged"/> -->
                             <TextBox Name="numeroDepartementTextBox" Height="20" Margin="0,0,0.300,0" />
                             <Button x:Name="nomPrenomButton" Content="Ajout Département" Click="nomPrenomButton_Click_1" BorderBrush="#FF545454" BorderThickness="5,5,5,1" Height="35" Margin="0,5,206.333,0" HorizontalAlignment="Right" Width="427" RenderTransformOrigin="0.5,2.31" >
                                 <Button.Background>
@@ -66,23 +64,19 @@
                     <StackPanel>
                         <Label Content="Nom"></Label>
                         <TextBox Name="nomEtudeTextBox" Height="20"/>
+                        <!--<Label Content="Departement"/>
+                        <ComboBox IsEditable="True" Width="200" Name="listeDepartement2" SelectionChanged="ListeCommune_SelectionChanged" DisplayMemberPath="nomDepartementProperty" ItemsSource="{Binding}"  HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black" SelectedValue="{Binding idDepartementProperty}" />
+                        <Label Content="Commune"/>
+                        <ComboBox IsEditable="True" Width="200" Name="listeCommune2" SelectionChanged="ListePlage_SelectionChanged" DisplayMemberPath="nomCommuneProperty" ItemsSource="{Binding}"  HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black" SelectedValue="{Binding idCommuneProperty}" />
+-->
                         <Label Content="Plages de l'étude"/>
-                        <ListView ItemsSource="{Binding}"  DisplayMemberPath="nomPlageProperty" SelectedItem="{Binding idPlageProperty}" Name="listePlage" >
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn>
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox Content="{Binding nomPlageProperty}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                               
-                            </ListView.View>
-
-                           
-                        </ListView>
+                        <ListBox ItemsSource="{Binding}"  Name="listePlage2">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Name="box" Content="{Binding nomPlageProperty}" Checked="Box_Checked" IsChecked="{Binding isChekedProperty}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
                         
                         <Button x:Name="AjoutEtude" Content="Ajout de l'étude" Click="AjouterEtude_Click_1" BorderBrush="#FF545454" BorderThickness="5,5,5,1" Height="35" Width="200">
@@ -116,22 +110,7 @@
                         <TextBox Name="codePosatelDepartementTextBox" Height="20"/>
 
                         <Label Content="Département"></Label>
-                        <Grid Margin="10">
-                            <DataGrid Name="listeDepartement" ItemsSource="{Binding}" AutoGenerateColumns="false" HorizontalAlignment="Left" Margin="200,0"  Grid.ColumnSpan="3" BorderBrush="Black" Background="#FFA4A4A4"  SelectedItem="{Binding idDepartementProperty}" SelectionChanged="listeDepartement_SelectionChanged">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="nom" Binding="{Binding nomDepartementProperty, Mode=TwoWay}" />
-                                    <DataGridTemplateColumn Header="choix Departement">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <RadioButton GroupName="groupe" Name="radioButtonDep"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                 </DataGrid.Columns>
-                            </DataGrid>
-                            
-                        </Grid>
-
+                        <ComboBox IsEditable="True" Width="200" Name="listeDepartement" DisplayMemberPath="nomDepartementProperty" ItemsSource="{Binding}"  HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black" SelectedValue="{Binding idDepartementProperty}"/>
                         <Button x:Name="AjoutCommune" Content="Ajout de l'étude" Click="AjoutCommune_Click_1" BorderBrush="#FF545454" BorderThickness="5,5,5,1" Height="35" Width="200" >
                             <Button.Background>
                                 <RadialGradientBrush>
@@ -148,12 +127,7 @@
                        
                         <Label Content="Commune"></Label>
 
-                        <ComboBox IsEditable="True" Width="200" Name="listeCommune" DisplayMemberPath="nomCommuneProperty" ItemsSource="{Binding}"  HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black" SelectedValue="{Binding idCommuneProperty}" >
-
-                        </ComboBox>
-
-
-
+                        <ComboBox IsEditable="True" Width="200" Name="listeCommune" DisplayMemberPath="nomCommuneProperty" ItemsSource="{Binding}"  HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black" SelectedValue="{Binding idCommuneProperty}"/>
                         <Button x:Name="AjoutPlage" Content="Ajout de la Plage" Click="AjoutPlage_Click_1" BorderBrush="#FF545454" BorderThickness="5,5,5,1" Height="35" Width="200" >
                             <Button.Background>
                                 <RadialGradientBrush>
@@ -164,25 +138,10 @@
                     </StackPanel>
                 </TabItem>
 
-               
-             <!--   <TabItem Header="Zone d'étude">
+
+                <TabItem Header="Zone d'étude">
                     <StackPanel>
                         <Label Content="Etude"/>
-                        <ComboBox IsEditable="True" ItemsSource="{Binding}" SelectedItem="{Binding idCommuneProperty}" Name="listeCommune2">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding nomCommuneProperty}"></TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <Label Content="Plage"/>
-                        <ComboBox IsEditable="True" ItemsSource="{Binding}" SelectedItem="{Binding idPlageProperty}" Name="listePlage">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding nomPlageProperty}"></TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
 
                         <Label Content="Coordonnée A"/>
                         <TextBox Name="CoordonneATextBox"  Height="20" Margin="0,0,0.300,0"/>
@@ -192,9 +151,14 @@
                         <TextBox  Name="CoordonneCTextBox"  Height="20" Margin="0,0,0.300,0"/>
                         <Label Content="Coordonnée D"/>
                         <TextBox  Name="CoordonneDTextBox"  Height="20" Margin="0,0,0.300,0"/>
+                        <Label Content="Etude"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding}" SelectedItem="{Binding idEtudeProperty}"  Name="listeEtude" SelectionChanged="ListeEtude_Selected" DisplayMemberPath="nomEtudeProperty" HorizontalAlignment="Left" Margin="20,0" BorderBrush="Black"/>
 
 
+                        <Label Content="Plage de l'étude"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding}" SelectedItem="{Binding idPlageProperty}" Name="listePlage" DisplayMemberPath="nomPlageProperty">
 
+                        </ComboBox>
 
                         <Button x:Name="AjoutZone" Content="Ajout d'une zone d'étude" Click="AjoutZone_Click_1" BorderBrush="#FF545454" BorderThickness="5,5,5,1" Height="35" Width="200" >
                             <Button.Background>
@@ -204,7 +168,7 @@
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                </TabItem>-->
+                </TabItem>
             </TabControl>
         </StackPanel>
     </DockPanel>

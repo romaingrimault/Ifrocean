@@ -31,9 +31,9 @@ namespace Ifrocean
             return p;
         }
 
-        public static void updateDepartement(DepartementViewModel d)
+        public static void updateDepartement(DepartementDAO d)
         {
-            DalDepartement.updateDepartement(new DepartementDAO(d.idDepartementProperty, d.nomDepartementProperty, d.numeroDepartementProperty));
+            DalDepartement.updateDepartement(d);
         }
 
         public static void supprimerDepartement(int id)
@@ -41,9 +41,9 @@ namespace Ifrocean
             DalDepartement.supprimerDepartement(id);
         }
 
-        public static void insertDepartement(DepartementViewModel d)
+        public static void insertDepartement(DepartementDAO d)
         {
-            DalDepartement.insertDepartement(new DepartementDAO(d.idDepartementProperty, d.nomDepartementProperty, d.numeroDepartementProperty));
+            DalDepartement.insertDepartement(d);
         }
     }
 

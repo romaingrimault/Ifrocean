@@ -29,6 +29,21 @@ namespace Ifrocean.ORM
             }
             return l;
         }
+
+        public static void updateAnimaux(AnimauxViewModel d)
+        {
+            AnimauxDAO.updateAnimaux(new AnimauxDAO(d.nomEspeceAnimauxProperty));
+        }
+
+        public static void supprimerAnimaux(int id)
+        {
+            AnimauxDAO.supprimerAnimaux(id);
+        }
+
+        public static void insertAnimaux(AnimauxViewModel d)
+        {
+            AnimauxDAO.insertAnimaux(new AnimauxDAO(d.nomEspeceAnimauxProperty));
+        }
     }
   }
 

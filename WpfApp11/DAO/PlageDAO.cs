@@ -25,6 +25,16 @@ namespace Ifrocean.DAO
             ObservableCollection<PlageDAO> l = PlageDAL.selectPlage();
             return l;
         }
+        public static ObservableCollection<PlageDAO> listeEtudePlage(int idEtude)
+        {
+            ObservableCollection<PlageDAO> l = PlageDAL.selectEtudePlage(idEtude);
+            return l;
+        }
+        public static ObservableCollection<PlageDAO> listePlageParCommune(int idCommune)
+        {
+            ObservableCollection<PlageDAO> l = PlageDAL.selectPlageParCommune(idCommune);
+            return l;
+        }
 
         public static PlageDAO getPlage(int idPlage)
         {
@@ -32,9 +42,9 @@ namespace Ifrocean.DAO
             return p;
         }
 
-        public static void updatePlage(PlageViewModel d)
+        public static void updatePlage(PlageDAO d)
         {
-            PlageDAL.updatePlage(new PlageDAO(d.idPlageProperty ,d.nomPlageProperty,d.idCommunePlageProperty)) ;
+            PlageDAL.updatePlage(d) ;
         }
 
         public static void supprimerPlage(int id)
@@ -42,9 +52,9 @@ namespace Ifrocean.DAO
             PlageDAL.supprimerPlage(id);
         }
 
-        public static void insertPlage(PlageViewModel d)
+        public static void insertPlage(PlageDAO d)
         {
-            PlageDAL.insertPlage(new PlageDAO(d.idPlageProperty,d.nomPlageProperty, d.idCommunePlageProperty));
+            PlageDAL.insertPlage(d);
         }
     }
 }

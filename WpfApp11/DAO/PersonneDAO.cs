@@ -18,9 +18,9 @@ namespace Ifrocean.DAO
         public string mdpPersonneDAO;
         public string mailPersonneDAO;
         public Byte adminPersonneDAO;
-        public PersonneDAO(string newNomPersonne, string newPrenomPersonne,string newIdentifiantPersonne,string newmdpPersonne,string newMail, Byte newAdmin)
+        public PersonneDAO(int newIdPersonne, string newNomPersonne, string newPrenomPersonne,string newIdentifiantPersonne,string newmdpPersonne,string newMail, Byte newAdmin)
         {
-
+            this.idPersonneDAO = newIdPersonne;
             this.nomPersonneDAO = newNomPersonne;
             this.prenomPersonneDAO = newPrenomPersonne;
             this.identifiantPersonneDAO = newIdentifiantPersonne;
@@ -40,9 +40,9 @@ namespace Ifrocean.DAO
             return p;
         }
 
-        public static void updatePersonne(PersonneViewModel d)
+        public static void updatePersonne(PersonneDAO d)
         {
-            PersonneDAL.updatePersonne(new PersonneDAO(d.nomPersonneProperty, d.prenomPersonneProperty, d.identifiantPersonneProperty, d.mdpPersonneProperty, d.mailPersonneProperty, d.adminPersonneProperty));
+            PersonneDAL.updatePersonne(d);
         }
 
         public static void supprimerPersonne(int id)
@@ -50,9 +50,9 @@ namespace Ifrocean.DAO
             PersonneDAL.supprimerPersonne(id);
         }
 
-        public static void insertPersonne(PersonneViewModel d)
+        public static void insertPersonne(PersonneDAO d)
         {
-            PersonneDAL.insertPersonne(new PersonneDAO(d.nomPersonneProperty, d.prenomPersonneProperty,d.identifiantPersonneProperty,d.mdpPersonneProperty,d.mailPersonneProperty,d.adminPersonneProperty));
+            PersonneDAL.insertPersonne(d);
         }
     }
 }

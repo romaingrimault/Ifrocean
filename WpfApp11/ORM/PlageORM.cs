@@ -14,7 +14,9 @@ namespace Ifrocean.ORM
         public static PlageViewModel getPlage(int idPlage)
         {
             PlageDAO pDAO = PlageDAO.getPlage(idPlage);
-            PlageViewModel p = new PlageViewModel(pDAO.idPlageDAO, pDAO.nomPlageDAO,pDAO.idCommunePlageDAO);
+            int id = pDAO.idCommunePlageDAO;
+            CommuneViewModel m = CommuneORM.getCommune(id);
+            PlageViewModel p = new PlageViewModel(pDAO.idPlageDAO, pDAO.nomPlageDAO,m);
             return p;
         }
 
@@ -24,10 +26,39 @@ namespace Ifrocean.ORM
             ObservableCollection<PlageViewModel> l = new ObservableCollection<PlageViewModel>();
             foreach (PlageDAO element in lDAO)
             {
-                PlageViewModel p = new PlageViewModel(element.idPlageDAO ,element.nomPlageDAO,element.idCommunePlageDAO);
+                int id = element.idCommunePlageDAO;
+                CommuneViewModel m = CommuneORM.getCommune(id);
+                PlageViewModel p = new PlageViewModel(element.idPlageDAO ,element.nomPlageDAO,m);
                 l.Add(p);
             }
             return l;
+        }
+        public static ObservableCollection<PlageViewModel> listePlageParCommune(CommuneViewModel commune)
+        {
+            ObservableCollection<PlageDAO> lDAO = PlageDAO.listePlageParCommune(commune.idCommuneProperty);
+            ObservableCollection<PlageViewModel> l = new ObservableCollection<PlageViewModel>();
+            foreach (PlageDAO element in lDAO)
+            {
+                int id = element.idCommunePlageDAO;
+                
+                PlageViewModel p = new PlageViewModel(element.idPlageDAO ,element.nomPlageDAO,commune);
+                l.Add(p);
+            }
+            return l;
+        }
+        public static void updatePlage(PlageViewModel d)
+        {
+            PlageDAO.updatePlage(new PlageDAO(d.idPlageProperty, d.nomPlageProperty, d.communeProperty.idCommuneProperty));
+        }
+
+        public static void supprimerPlage(int id)
+        {
+            PlageDAO.supprimerPlage(id);
+        }
+
+        public static void insertPlage(PlageViewModel d)
+        {
+            PlageDAO.insertPlage(new PlageDAO(d.idPlageProperty, d.nomPlageProperty, d.communeProperty.idCommuneProperty));
         }
     }
 }

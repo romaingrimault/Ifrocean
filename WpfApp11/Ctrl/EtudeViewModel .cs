@@ -1,4 +1,5 @@
 ﻿using Ifrocean.DAO;
+using Ifrocean.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,15 +16,19 @@ namespace Ifrocean.Ctrl
 
         public EtudeViewModel() { }
 
-        public EtudeViewModel(string nomEtude)
+        public EtudeViewModel(int idEtude,string nomEtude)
         {
-
+            this.idEtudeProperty = idEtude;
             this.nomEtudeProperty = nomEtude;
 
         }
         public int idEtudeProperty
         {
             get { return idEtude; }
+            set
+            {
+                this.idEtude = value;
+            }
         }
 
         public String nomEtudeProperty
@@ -43,10 +48,11 @@ namespace Ifrocean.Ctrl
         private void OnPropertyChanged(string info)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
+
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                EtudeDAO.updateEtude(this);
+                EtudeORM.updateEtude(this);
             }
         }
     }

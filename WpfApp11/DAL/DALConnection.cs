@@ -11,7 +11,7 @@ namespace Ifrocean
         private static string password;
         public static MySqlConnection connection;
 
-        public static Boolean OpenConnection()
+        public static MySqlConnection OpenConnection()
         {
             if (connection == null) //  si la connexion est déjà ouverte, il ne la refera pas 
             {
@@ -26,7 +26,7 @@ namespace Ifrocean
                 connection = new MySqlConnection(connectionString);
                 connection.Open();
             }
-            return true;
+            return connection;
         }
     }
 }

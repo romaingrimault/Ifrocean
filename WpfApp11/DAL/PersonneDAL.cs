@@ -22,14 +22,14 @@ namespace Ifrocean.DAL
         {
             ObservableCollection<PersonneDAO> l = new ObservableCollection<PersonneDAO>();
             string query = "SELECT * FROM Personne;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
 
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
-                PersonneDAO d = new PersonneDAO(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetByte(5));
+                PersonneDAO d = new PersonneDAO(reader.GetInt32(0),reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(6), reader.GetByte(5));
                 l.Add(d);
             }
             reader.Close();
@@ -38,7 +38,7 @@ namespace Ifrocean.DAL
         public static void insertPersonne(PersonneDAO d)
         {
             string query = "INSERT INTO Personne (nom,prenom,identifiant,motDePasse,admin,adresseMail) VALUES (@nomPersonne,@prenomPersonne,@identifiantPersonne,@motDePassePersonne,@adminPersonne,@adresseMailPersonne);";
-            MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.connection);
+            MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd1.Parameters.AddWithValue("@nomPersonne", d.nomPersonneDAO);
             cmd1.Parameters.AddWithValue("@prenomPersonne", d.prenomPersonneDAO);
             cmd1.Parameters.AddWithValue("@identifiantPersonne", d.identifiantPersonneDAO);
@@ -51,12 +51,13 @@ namespace Ifrocean.DAL
 
         public static PersonneDAO getPersonne(int idPersonne)
         {
-            string query = "SELECT * FROM Personne WHERE idPersonne=" + idPersonne + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            string query = "SELECT * FROM Personne WHERE idPersonne=@idPersonne;";
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.Parameters.AddWithValue("@idPersonne", idPersonne);
             cmd.ExecuteNonQuery();
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
-            PersonneDAO Personne = new PersonneDAO(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetByte(5));
+            PersonneDAO Personne = new PersonneDAO(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(6), reader.GetByte(5));
             reader.Close();
             return Personne;
         }
@@ -64,7 +65,7 @@ namespace Ifrocean.DAL
         public static void updatePersonne(PersonneDAO d)
         {
             string query = "UPDATE Personne set nom=@nomPersonne,prenom=@prenomPersonne,identifient=,@identifiantPersonne,motDePasse=@motDePassePersonne,admin=@adminPersonne,adresseMail=@adresseMailPersonne where IdPersonne=@idPersonne;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@idPersonne", d.idPersonneDAO);
             cmd.Parameters.AddWithValue("@nomPersonne", d.nomPersonneDAO);
             cmd.Parameters.AddWithValue("@prenomPersonne", d.prenomPersonneDAO);
@@ -79,7 +80,7 @@ namespace Ifrocean.DAL
         {
             string query = "DELETE FROM Personne WHERE IdPersonne = @idPersonne;";
 
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@adresseMailPersonne",id);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();

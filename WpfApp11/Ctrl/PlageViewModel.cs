@@ -1,4 +1,5 @@
 ﻿using Ifrocean.DAO;
+using Ifrocean.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,17 +13,18 @@ namespace Ifrocean.Ctrl
     {
         private int idPlage;
         private string nomPlage;
-        private int idCommunetPlage;
+        private CommuneViewModel commune;
+        private Boolean IsChecked = false;
 
 
 
         public PlageViewModel() { }
 
-        public PlageViewModel(int idPlage,string nomPlage,int idCommunetPlage)
+        public PlageViewModel(int idPlage,string nomPlage,CommuneViewModel commune)
         {
             this.idPlageProperty = idPlage;
             this.nomPlageProperty = nomPlage;
-            this.idCommunePlageProperty = idCommunetPlage;
+            this.communeProperty = commune;
 
         }
         public int idPlageProperty
@@ -44,13 +46,22 @@ namespace Ifrocean.Ctrl
             }
 
         }
-        public Int32 idCommunePlageProperty
+        public CommuneViewModel communeProperty
         {
-            get { return idCommunetPlage; }
+            get { return commune; }
             set
             {
-                this.idCommunetPlage = value;
+                this.commune = value;
                 OnPropertyChanged("idDepartementPlageProperty");
+            }
+        }
+        public Boolean isChekedProperty
+        {
+            get { return IsChecked; }
+            set
+            {
+                this.IsChecked = value;
+                
             }
         }
 
@@ -63,8 +74,10 @@ namespace Ifrocean.Ctrl
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                PlageDAO.updatePlage(this);
+                PlageORM.updatePlage(this);
             }
         }
+
+        
     }
 }

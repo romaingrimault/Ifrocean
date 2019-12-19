@@ -14,7 +14,9 @@ namespace Ifrocean.ORM
         public static CommuneViewModel getCommune(int idCommune)
         {
             CommuneDAO pDAO = CommuneDAO.getCommune(idCommune);
-            CommuneViewModel p = new CommuneViewModel(pDAO.idCommuneDAO,pDAO.nomCommuneDAO, pDAO.codePostalDAO,pDAO.idDepartementCommuneDAO);
+            int idDep = pDAO.idDepartementCommuneDAO;
+            DepartementViewModel m = DepartementORM.getDepartement(idDep);
+            CommuneViewModel p = new CommuneViewModel(pDAO.idCommuneDAO,pDAO.nomCommuneDAO, pDAO.codePostalDAO,m);
             return p;
         }
 
@@ -24,10 +26,39 @@ namespace Ifrocean.ORM
             ObservableCollection<CommuneViewModel> l = new ObservableCollection<CommuneViewModel>();
             foreach (CommuneDAO element in lDAO)
             {
-                CommuneViewModel p = new CommuneViewModel(element.idCommuneDAO,element.nomCommuneDAO, element.codePostalDAO,element.idDepartementCommuneDAO);
+                int idDep = element.idDepartementCommuneDAO;
+                DepartementViewModel m = DepartementORM.getDepartement(idDep);
+                CommuneViewModel p = new CommuneViewModel(element.idCommuneDAO,element.nomCommuneDAO, element.codePostalDAO,m);
                 l.Add(p);
             }
             return l;
+        }
+        public static ObservableCollection<CommuneViewModel> listeCommuneDepartement(DepartementViewModel departement)
+        {
+            ObservableCollection<CommuneDAO> lDAO = CommuneDAO.listeCommuneDepartement(departement.idDepartementProperty);
+            ObservableCollection<CommuneViewModel> l = new ObservableCollection<CommuneViewModel>();
+            foreach (CommuneDAO element in lDAO)
+            {
+                int idDep = element.idDepartementCommuneDAO;
+                CommuneViewModel p = new CommuneViewModel(element.idCommuneDAO,element.nomCommuneDAO, element.codePostalDAO,departement);
+                l.Add(p);
+            }
+            return l;
+        }
+
+        public static void updateCommune(CommuneViewModel d)
+        {
+            CommuneDAO.updateCommune(new CommuneDAO(d.idCommuneProperty, d.nomCommuneProperty, d.codePostalProperty, d.departementProperty.idDepartementProperty));
+        }
+
+        public static void supprimerCommune(int id)
+        {
+            CommuneDAO.supprimerCommune(id);
+        }
+
+        public static void insertCommune(CommuneViewModel d)
+        {
+            CommuneDAO.insertCommune(new CommuneDAO(d.idCommuneProperty, d.nomCommuneProperty, d.codePostalProperty, d.departementProperty.idDepartementProperty));
         }
     }
 }

@@ -22,7 +22,43 @@ namespace Ifrocean.DAL
         {
             ObservableCollection<PlageDAO> l = new ObservableCollection<PlageDAO>();
             string query = "SELECT * FROM Plage;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.ExecuteNonQuery();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                PlageDAO c = new PlageDAO(reader.GetInt32(0),reader.GetString(1),reader.GetInt32(2));
+                l.Add(c);
+            }
+            reader.Close();
+            return l;
+        }
+        public static ObservableCollection<PlageDAO> selectEtudePlage(int idEtude)
+        {
+            ObservableCollection<PlageDAO> l = new ObservableCollection<PlageDAO>();
+            string query = "select * from plage p join plagedeetude pe on p.idPlage = pe.idPlage where pe.idEtude =@idEtude ";
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.Parameters.AddWithValue("@idEtude", idEtude);
+            cmd.ExecuteNonQuery();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                PlageDAO c = new PlageDAO(reader.GetInt32(0),reader.GetString(1),reader.GetInt32(2));
+                l.Add(c);
+            }
+            reader.Close();
+            return l;
+        }
+        public static ObservableCollection<PlageDAO> selectPlageParCommune(int idCommune)
+        {
+            ObservableCollection<PlageDAO> l = new ObservableCollection<PlageDAO>();
+            string query = "select * from plage where idCommune =@idCommune ";
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.Parameters.AddWithValue("@idCommune", idCommune);
             cmd.ExecuteNonQuery();
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -40,7 +76,7 @@ namespace Ifrocean.DAL
 
 
                 string query = "INSERT INTO Plage (nom,idCommune) VALUES (@nomPlage,@idCommune);";
-                MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.connection);
+                MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.OpenConnection());
                 cmd1.Parameters.AddWithValue("@nomPlage", c.nomPlageDAO);
                 cmd1.Parameters.AddWithValue("@idCommune", c.idCommunePlageDAO);
                 MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd1);
@@ -51,7 +87,7 @@ namespace Ifrocean.DAL
         public static PlageDAO getPlage(int idPlage)
         {
             string query = "SELECT * FROM Plage WHERE idPlage=" + idPlage + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -63,7 +99,7 @@ namespace Ifrocean.DAL
         public static void updatePlage(PlageDAO c)
         {
             string query = "UPDATE Departement set nom=@nomDepartement where idPlage=@idPlage;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@nomDepartement", c.nomPlageDAO);
             cmd.Parameters.AddWithValue("@idPlage", c.idPlageDAO);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
@@ -72,7 +108,7 @@ namespace Ifrocean.DAL
         public static void supprimerPlage(int id)
         {
             string query = "DELETE FROM Plage WHERE idPlage =@idPlage;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@idPlage", id);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();

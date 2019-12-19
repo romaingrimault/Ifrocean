@@ -14,9 +14,9 @@ namespace Ifrocean.DAO
         public int idEtudeDAO;
         public string nomEtudeDAO;
 
-        public EtudeDAO(string newNomEtude)
+        public EtudeDAO(int newId,string newNomEtude)
         {
-
+            this.idEtudeDAO = newId;
             this.nomEtudeDAO = newNomEtude;
 
         }
@@ -32,9 +32,9 @@ namespace Ifrocean.DAO
             return p;
         }
 
-        public static void updateEtude(EtudeViewModel d)
+        public static void updateEtude(EtudeDAO d)
         {
-            EtudeDAL.updateEtude(new EtudeDAO(d.nomEtudeProperty));
+            EtudeDAL.updateEtude(d);
         }
 
         public static void supprimerEtude(int id)
@@ -42,9 +42,9 @@ namespace Ifrocean.DAO
             EtudeDAL.supprimerEtude(id);
         }
 
-        public static void insertEtude(EtudeViewModel d)
+        public static void insertEtude(EtudeDAO d)
         {
-            EtudeDAL.insertEtude(new EtudeDAO(d.nomEtudeProperty));
+            EtudeDAL.insertEtude(d);
         }
     }
 }

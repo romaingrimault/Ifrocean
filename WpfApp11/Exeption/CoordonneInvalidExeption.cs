@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace Ifrocean.Exeption
 {
-    class CoordonneInvalidExeption : Exception
-    {
-        public class CodePostalCommuneInvalideException : Exception
+
+        public class CoordonneInvalidExeption : Exception
         {
 
-            public CodePostalCommuneInvalideException()
+            public CoordonneInvalidExeption()
             {
 
             }
 
 
-            public CodePostalCommuneInvalideException(string message) : base(message)
+            public CoordonneInvalidExeption(string message) : base(message)
             {
 
             }
         }
-    }
 }

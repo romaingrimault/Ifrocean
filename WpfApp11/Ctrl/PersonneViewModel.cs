@@ -1,4 +1,5 @@
 ﻿using Ifrocean.DAO;
+using Ifrocean.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,9 +23,9 @@ namespace Ifrocean.Ctrl
 
         public PersonneViewModel() { }
 
-        public PersonneViewModel(string nomPersonne, string prenomPersonne,string identifiantPersonne, string mdpPersonne,string mailPersonne, Byte adminPersonne)
+        public PersonneViewModel(int idPersonne, string nomPersonne, string prenomPersonne,string identifiantPersonne, string mdpPersonne,string mailPersonne, Byte adminPersonne)
         {
-
+            this.idPersonneProperty = idPersonne;
             this.nomPersonneProperty = nomPersonne;
             this.prenomPersonneProperty = prenomPersonne;
             this.identifiantPersonne = identifiantPersonne;
@@ -37,6 +38,10 @@ namespace Ifrocean.Ctrl
         public int idPersonneProperty
         {
             get { return idPersonne; }
+            set
+            {
+                idPersonne = value;
+            }
         }
 
         public String nomPersonneProperty
@@ -104,7 +109,7 @@ namespace Ifrocean.Ctrl
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                PersonneDAO.updatePersonne(this);
+                PersonenORM.updatePersonne(this);
             }
         }
     }

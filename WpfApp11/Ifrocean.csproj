@@ -71,12 +71,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Ctrl\PlageDeEtudeViewModel.cs" />
+    <Compile Include="Ctrl\ZoneEtudeViewModel.cs" />
     <Compile Include="Ctrl\PlageViewModel.cs" />
     <Compile Include="Ctrl\CommuneViewModel.cs" />
     <Compile Include="Ctrl\DepartementViewModel.cs" />
     <Compile Include="Ctrl\AnimauxViewModel.cs" />
     <Compile Include="Ctrl\EtudeViewModel .cs" />
     <Compile Include="Ctrl\PersonneViewModel.cs" />
+    <Compile Include="DAL\ZoneEtudeDAL .cs" />
+    <Compile Include="DAL\PlageDeEtudeDAL.cs" />
     <Compile Include="DAL\PlageDAL.cs" />
     <Compile Include="DAL\CommuneDAL.cs" />
     <Compile Include="DAL\DALConnection.cs" />
@@ -84,6 +88,8 @@
     <Compile Include="DAL\AnimauxDAL .cs" />
     <Compile Include="DAL\EtudeDAL.cs" />
     <Compile Include="DAL\PersonneDAL.cs" />
+    <Compile Include="DAO\ZoneEtudeDAO.cs" />
+    <Compile Include="DAO\PlageDeEtudeDAO.cs" />
     <Compile Include="DAO\PlageDAO.cs" />
     <Compile Include="DAO\CommuneDAO.cs" />
     <Compile Include="DAO\DepartementDAO.cs" />
@@ -92,6 +98,8 @@
     <Compile Include="DAO\PersonneDAO.cs" />
     <Compile Include="Exeption\CodePostalCommuneInvalideExeptipn.cs" />
     <Compile Include="Exeption\CoordonneInvalidExeption.cs" />
+    <Compile Include="ORM\PlageDeEtudeORM.cs" />
+    <Compile Include="ORM\ZoneEtudeORM.cs" />
     <Compile Include="ORM\PlageORM.cs" />
     <Compile Include="ORM\CommuneORM.cs" />
     <Compile Include="ORM\DepartementORM.cs" />

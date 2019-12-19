@@ -22,7 +22,25 @@ namespace Ifrocean.DAL
         {
             ObservableCollection<CommuneDAO> l = new ObservableCollection<CommuneDAO>();
             string query = "SELECT * FROM commune;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.ExecuteNonQuery();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                CommuneDAO c = new CommuneDAO(reader.GetInt32(0),reader.GetString(1), reader.GetString(2),reader.GetInt32(3));
+                l.Add(c);
+            }
+            reader.Close();
+            return l;
+        }
+        public static ObservableCollection<CommuneDAO> selectCommuneDepartement(int idDepartement)
+        {
+            ObservableCollection<CommuneDAO> l = new ObservableCollection<CommuneDAO>();
+            string query = "SELECT * FROM commune WHERE idDepartement=@idDepartement;";
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
+            cmd.Parameters.AddWithValue("@idDepartement", idDepartement);
             cmd.ExecuteNonQuery();
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -40,19 +58,18 @@ namespace Ifrocean.DAL
 
 
                 string query = "INSERT INTO commune (nom,codePostal,idDepartement) VALUES (@nomCommune,@codePostal,@idDepartement);";
-                MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.connection);
+                MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.OpenConnection());
                 cmd1.Parameters.AddWithValue("@nomCommune", c.nomCommuneDAO);
                 cmd1.Parameters.AddWithValue("@codePostal", c.codePostalDAO);
                 cmd1.Parameters.AddWithValue("@idDepartement", c.idDepartementCommuneDAO);
                 MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd1);
                 cmd1.ExecuteNonQuery();
-
         }
 
         public static CommuneDAO getCommune(int idCommune)
         {
             string query = "SELECT * FROM commune WHERE idCommune=" + idCommune + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -64,7 +81,7 @@ namespace Ifrocean.DAL
         public static void updateCommune(CommuneDAO c)
         {
             string query = "UPDATE Departement set nom=@nomDepartement NumeroDepartement=@numeroDepartement where idCommune=@idCommune;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@nomDepartement", c.nomCommuneDAO);
             cmd.Parameters.AddWithValue("@numeroDepartement", c.codePostalDAO);
             cmd.Parameters.AddWithValue("@idCommune", c.idCommuneDAO);
@@ -74,7 +91,7 @@ namespace Ifrocean.DAL
         public static void supprimerCommune(int id)
         {
             string query = "DELETE FROM commune WHERE idCommune =@idCommune;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@idCommune", id);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();

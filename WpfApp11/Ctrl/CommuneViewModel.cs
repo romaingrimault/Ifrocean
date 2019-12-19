@@ -1,4 +1,5 @@
 ﻿using Ifrocean.DAO;
+using Ifrocean.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,18 +14,18 @@ namespace Ifrocean.Ctrl
         private int idCommune;
         private string nomCommune;
         private string codePostal;
-        private int idDepartementCommune;
+        private DepartementViewModel departement;
 
 
 
         public CommuneViewModel() { }
 
-        public CommuneViewModel(int idCommune ,string nomCommune, string codePostal,int idDepartementCommune)
+        public CommuneViewModel(int idCommune ,string nomCommune, string codePostal, DepartementViewModel departement)
         {
             this.idCommuneProperty = idCommune;
             this.nomCommuneProperty = nomCommune;
             this.codePostalProperty = codePostal;
-            this.idDepartementCommuneProperty = idDepartementCommune;
+            this.departementProperty = departement;
 
         }
         public int idCommuneProperty
@@ -55,12 +56,12 @@ namespace Ifrocean.Ctrl
                 OnPropertyChanged("codePostalProperty");
             }
         }
-        public Int32 idDepartementCommuneProperty
+        public DepartementViewModel departementProperty
         {
-            get { return idDepartementCommune; }
+            get { return departement; }
             set
             {
-                this.idDepartementCommune = value;
+                this.departement = value;
                 OnPropertyChanged("idDepartementCommuneProperty");
             }
         }
@@ -74,7 +75,7 @@ namespace Ifrocean.Ctrl
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                CommuneDAO.updateCommune(this);
+                CommuneORM.updateCommune(this);
             }
         }
     }

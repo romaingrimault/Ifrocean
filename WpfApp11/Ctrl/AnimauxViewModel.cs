@@ -1,4 +1,5 @@
 ﻿using Ifrocean.DAO;
+using Ifrocean.ORM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,7 +47,7 @@ namespace Ifrocean.Ctrl
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(info));
-                AnimauxDAO.updateAnimaux(this);
+                AnimauxORM.updateAnimaux(this);
             }
         }
     }

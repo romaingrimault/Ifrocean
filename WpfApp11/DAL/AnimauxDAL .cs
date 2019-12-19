@@ -22,7 +22,7 @@ namespace Ifrocean.DAL
         {
             ObservableCollection<AnimauxDAO> l = new ObservableCollection<AnimauxDAO>();
             string query = "SELECT * FROM Animaux;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -38,7 +38,7 @@ namespace Ifrocean.DAL
         public static void insertAnimaux(AnimauxDAO d)
         {
             string query = "INSERT INTO Animaux (espece) VALUES (@nomAnimaux);";
-            MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.connection);
+            MySqlCommand cmd1 = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd1.Parameters.AddWithValue("@nomAnimaux", d.nomAnimauxDAO);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd1);
             cmd1.ExecuteNonQuery();
@@ -47,7 +47,7 @@ namespace Ifrocean.DAL
         public static AnimauxDAO getAnimaux(int idAnimaux)
         {
             string query = "SELECT * FROM Animaux WHERE idAnimaux=" + idAnimaux + ";";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.ExecuteNonQuery();
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -59,7 +59,7 @@ namespace Ifrocean.DAL
         public static void updateAnimaux(AnimauxDAO d)
         {
             string query = "UPDATE Animaux set espece=@nomAnimaux where IdAnimaux=@idAnimaux;";
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@idAnimaux", d.idAnimauxDAO);
             cmd.Parameters.AddWithValue("@nomAnimaux", d.nomAnimauxDAO);
 
@@ -70,7 +70,7 @@ namespace Ifrocean.DAL
         {
             string query = "DELETE FROM Animaux WHERE IdAnimaux = @idAnimaux;";
 
-            MySqlCommand cmd = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, DALConnection.OpenConnection());
             cmd.Parameters.AddWithValue("@adresseMailAnimaux",id);
             MySqlDataAdapter sqlDataAdap = new MySqlDataAdapter(cmd);
             cmd.ExecuteNonQuery();
