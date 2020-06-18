@@ -1,7 +1,7 @@
 # Ifrocean
 Interface administrateur du projet Ifrocean
 
-/!\ Le projet comporte pas mal de bug étant donnée qu'il n'est pas tout à fait fini.
+Ce projet a été réalisé seul sous c# WPF.
 
-Projet réalisé sous c# WPF et seul
+/!\ Il comprend encore beaucoup de bugs car il n'est pas encore terminé.
 
